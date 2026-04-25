@@ -1,46 +1,69 @@
-# Initia AI Yield Sentinel
+# Initia AI Yield Sentinel (Vite + React + TypeScript)
 
-Initia AI Yield Sentinel is an AI-lite yield decision frontend with real InterwovenKit wallet integration, transaction execution, and auto-signing controls.
+This repository is a **Vite runtime** for the Initia AI Yield Sentinel app.
+It includes:
 
-## What is implemented
+- InterwovenKit wallet connect/open wallet/open bridge flow.
+- Sentinel score/confidence/reasons UI.
+- Execute transaction flow using `requestTxBlock` and status feedback.
+- Runtime diagnostics panel (provider state, wallet state, chain ID, last tx status).
+- Visible runtime failure cards (error boundary + in-app provider error card).
 
-- InterwovenKit provider wiring in app bootstrapping (`src/main.tsx`)
-- Wallet connect/open wallet/open bridge actions in UI
-- AI-lite signal engine with score, confidence, and explainable reasons
-- Execution button that submits a real transaction request via `requestTxBlock`
-- Auto-signing UX controls (`enable` / `disable`) through `autoSign`
-- Submission metadata file at `.initia/submission.json`
+## Stack
 
-## Local run
+- Vite
+- React 19 + TypeScript
+- `@initia/interwovenkit-react`
+
+## Local development
 
 ```bash
 npm install --legacy-peer-deps
 npm run dev
 ```
 
-Open the Vite app URL shown by terminal (usually forwarded port 5173 or 3000 depending on environment).
+Then open the local Vite URL (usually `http://localhost:5173`).
 
-## Build
+## Production build preview
 
 ```bash
 npm run build
 npm run preview
 ```
 
-## Initia-specific runtime notes
+Open the preview URL from terminal output (usually `http://localhost:4173`).
 
-- Configured chain ID: `ai-yield-sentinel-1`
-- RPC URL currently set to: `http://localhost:26657`
-- Gas station/deployer address used in submission metadata: `init17nn090yajatjq5njpw0850ncpqldewcrthfzc2`
+## Vercel deployment settings
 
-If local rollup services are unavailable in Codespaces (systemd/linger limitation), capture transaction-hash proof from the wallet execution flow and include it in demo + submission notes.
+Use these exact settings:
 
-## Submission checklist
+- **Framework Preset:** `Vite`
+- **Install Command:** `npm install --legacy-peer-deps`
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
 
-- [x] InterwovenKit wallet integration
-- [x] Native feature flow (auto-signing UX)
-- [x] Real tx request path from Execute button
-- [x] `.initia/submission.json` created
-- [ ] Final `commit_sha` set in `.initia/submission.json`
-- [ ] Final demo video URL set in `.initia/submission.json`
-- [ ] Final proof links attached in README/demo
+## Runtime expectations
+
+On a healthy load you should see:
+
+1. Header card: **Initia AI Yield Sentinel**
+2. Diagnostics card with:
+   - Provider initialization: `READY`
+   - Wallet connected: `yes/no`
+   - Chain ID in use: `ai-yield-sentinel-1`
+   - Last tx status: starts at `Idle`
+3. Wallet, auto-signing, sentinel input/output, and execute sections.
+
+If runtime crashes during startup, the app shows a red **Runtime Initialization Failed** card instead of a blank page.
+
+## Repo hygiene notes
+
+- This repo now keeps active frontend runtime files for Vite only.
+- `official-examples/` and `relayer/` are treated as non-runtime reference folders and ignored by git.
+
+## Known limitations
+
+- Transaction success depends on wallet connectivity and chain availability.
+- `requestTxBlock` may return no hash in some wallet/provider edge cases; UI still reports status.
+- Bundle size is large due to wallet ecosystem dependencies; Vite build can warn about chunk size.
+

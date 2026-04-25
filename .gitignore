@@ -6,6 +6,10 @@ dist/
 .next/
 out/
 
+# non-runtime reference folders
+official-examples/
+relayer/
+
 # env
 .env
 .env.*
