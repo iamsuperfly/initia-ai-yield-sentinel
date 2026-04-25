@@ -2,8 +2,7 @@ import { truncate } from '@initia/utils';
 import { useEffect, useMemo, useState } from 'react';
 import { InterwovenKit, useInterwovenKit } from '@initia/interwovenkit-react';
 import { evaluateSentinel, type MarketSnapshot } from './sentinel';
-
-const CHAIN_ID = 'ai-yield-sentinel-1';
+import { EXECUTION_CHAIN, HACKATHON_TARGET_ROLLUP_CHAIN_ID } from './networkConfig';
 
 const initialState: MarketSnapshot = {
   apr: 68,
@@ -47,7 +46,7 @@ export function App() {
     setError(null);
     setStatus('Enabling auto-signing...');
     try {
-      await autoSign.enable(CHAIN_ID);
+      await autoSign.enable(EXECUTION_CHAIN.chainId);
       setStatus('Auto-signing enabled');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to enable auto-signing';
@@ -61,7 +60,7 @@ export function App() {
     setError(null);
     setStatus('Disabling auto-signing...');
     try {
-      await autoSign.disable(CHAIN_ID);
+      await autoSign.disable(EXECUTION_CHAIN.chainId);
       setStatus('Auto-signing disabled');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to disable auto-signing');
@@ -82,14 +81,14 @@ export function App() {
 
     try {
       const result = await requestTxBlock({
-        chainId: CHAIN_ID,
+        chainId: EXECUTION_CHAIN.chainId,
         messages: [
           {
             typeUrl: '/cosmos.bank.v1beta1.MsgSend',
             value: {
               fromAddress: address,
               toAddress: address,
-              amount: [{ amount: '1000', denom: 'uinit' }],
+              amount: [{ amount: '1000', denom: EXECUTION_CHAIN.nativeCurrency.denom }],
             },
           },
         ],
@@ -103,7 +102,7 @@ export function App() {
     }
   };
 
-  const autoSignEnabled = autoSign.isEnabledByChain?.[CHAIN_ID] ?? false;
+  const autoSignEnabled = autoSign.isEnabledByChain?.[EXECUTION_CHAIN.chainId] ?? false;
 
   return (
     <main className="container">
@@ -126,7 +125,10 @@ export function App() {
           Wallet connected: <strong>{isConnected ? 'yes' : 'no'}</strong>
         </p>
         <p>
-          Chain ID in use: <strong>{CHAIN_ID}</strong>
+          Target Rollup (Hackathon): <strong>{HACKATHON_TARGET_ROLLUP_CHAIN_ID}</strong>
+        </p>
+        <p>
+          Execution Network (Live Demo): <strong>{EXECUTION_CHAIN.chainId}</strong>
         </p>
         <p>
           Last tx status: <strong>{status}</strong>
@@ -157,7 +159,8 @@ export function App() {
 
       <section className="card">
         <h2>Auto-Signing (Native Feature)</h2>
-        <p>Chain: {CHAIN_ID}</p>
+        <p>Target Rollup: {HACKATHON_TARGET_ROLLUP_CHAIN_ID}</p>
+        <p>Execution Chain: {EXECUTION_CHAIN.chainId}</p>
         <p>Status: {autoSignEnabled ? 'Enabled' : 'Disabled'}</p>
         <div className="walletRow">
           <button onClick={enableAutoSigning} disabled={!isConnected || autoSign.isLoading}>

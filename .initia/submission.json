@@ -15,7 +15,7 @@
   ],
   "demo_video_url": "TO_BE_ADDED",
   "proof_of_deployment": {
-    "rpc_url": "http://localhost:26657",
-    "notes": "Runtime-stable Vite UI with QueryClientProvider -> WagmiProvider -> InterwovenKitProvider initialization, wallet + requestTxBlock execution path. Capture final transaction hash in demo video/submission evidence."
+    "rpc_url": "https://rpc.testnet.initia.xyz",
+    "notes": "Fallback live demo executes wallet + auto-signing + requestTxBlock flow on initiation-2 (Initia Testnet) because local custom rollup runtime is blocked in Codespaces by systemd/environment limitations. Keep rollup_chain_id as compliance target ai-yield-sentinel-1."
   }
 }
