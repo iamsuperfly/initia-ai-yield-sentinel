@@ -1,0 +1,21 @@
+{
+  "project_name": "Initia AI Yield Sentinel",
+  "repo_url": "https://github.com/iamsuperfly/initia-ai-yield-sentinel",
+  "commit_sha": "TO_BE_FILLED_AT_FINAL_SUBMISSION",
+  "rollup_chain_id": "ai-yield-sentinel-1",
+  "deployer_address": "init17nn090yajatjq5njpw0850ncpqldewcrthfzc2",
+  "deployed_contract_address": "NOT_APPLICABLE_MVP_USES_MSGSEND_TX_FLOW",
+  "vm_type": "wasmvm",
+  "native_feature_used": [
+    "auto-signing"
+  ],
+  "native_feature_file_paths": [
+    "src/App.tsx",
+    "src/main.tsx"
+  ],
+  "demo_video_url": "TO_BE_ADDED",
+  "proof_of_deployment": {
+    "rpc_url": "http://localhost:26657",
+    "notes": "Codespaces systemd limitation prevented stable local daemon; include final tx hash proof from execution flow in demo."
+  }
+}

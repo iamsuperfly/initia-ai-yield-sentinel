@@ -1,0 +1,17 @@
+{
+  "project_name": "Initia AI Yield Sentinel",
+  "repo_url": "https://github.com/<your-org>/<your-repo>",
+  "commit_sha": "<filled-at-submission-time>",
+  "rollup_chain_id": "<your-rollup-chain-id>",
+  "deployed_contract_address": "<contract-address>",
+  "vm_type": "wasmvm",
+  "native_feature_used": [
+    "auto-signing"
+  ],
+  "native_feature_file_paths": [
+    "src/App.tsx"
+  ],
+  "demo_video_url": "https://www.loom.com/share/<id>",
+  "how_to_run_locally": "npm install && npm run dev",
+  "notes": "Replace all placeholder fields before submission."
+}
