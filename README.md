@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Initia AI Yield Sentinel
 
-## Getting Started
+Initia AI Yield Sentinel is an AI-lite yield decision frontend with real InterwovenKit wallet integration, transaction execution, and auto-signing controls.
 
-First, run the development server:
+## What is implemented
+
+- InterwovenKit provider wiring in app bootstrapping (`src/main.tsx`)
+- Wallet connect/open wallet/open bridge actions in UI
+- AI-lite signal engine with score, confidence, and explainable reasons
+- Execution button that submits a real transaction request via `requestTxBlock`
+- Auto-signing UX controls (`enable` / `disable`) through `autoSign`
+- Submission metadata file at `.initia/submission.json`
+
+## Local run
 
 ```bash
+npm install --legacy-peer-deps
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open the Vite app URL shown by terminal (usually forwarded port 5173 or 3000 depending on environment).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm run preview
+```
 
-## Learn More
+## Initia-specific runtime notes
 
-To learn more about Next.js, take a look at the following resources:
+- Configured chain ID: `ai-yield-sentinel-1`
+- RPC URL currently set to: `http://localhost:26657`
+- Gas station/deployer address used in submission metadata: `init17nn090yajatjq5njpw0850ncpqldewcrthfzc2`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If local rollup services are unavailable in Codespaces (systemd/linger limitation), capture transaction-hash proof from the wallet execution flow and include it in demo + submission notes.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Submission checklist
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [x] InterwovenKit wallet integration
+- [x] Native feature flow (auto-signing UX)
+- [x] Real tx request path from Execute button
+- [x] `.initia/submission.json` created
+- [ ] Final `commit_sha` set in `.initia/submission.json`
+- [ ] Final demo video URL set in `.initia/submission.json`
+- [ ] Final proof links attached in README/demo
