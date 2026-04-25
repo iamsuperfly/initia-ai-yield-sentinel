@@ -4,10 +4,13 @@ import ReactDOM from 'react-dom/client';
 import {
   InterwovenKitProvider,
   TESTNET,
+  initiaPrivyWalletConnector,
   injectStyles
 } from '@initia/interwovenkit-react';
 import InterwovenKitStyles from '@initia/interwovenkit-react/styles.js';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createConfig, http, WagmiProvider } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 import { App } from './App';
 import './styles.css';
 
@@ -48,6 +51,15 @@ class RootErrorBoundary extends React.Component<RootErrorBoundaryProps, RootErro
 
 function ProviderBootstrap() {
   const [queryClient] = React.useState(() => new QueryClient());
+  const [wagmiConfig] = React.useState(() =>
+    createConfig({
+      connectors: [initiaPrivyWalletConnector],
+      chains: [mainnet],
+      transports: {
+        [mainnet.id]: http(),
+      },
+    })
+  );
 
   React.useEffect(() => {
     injectStyles(InterwovenKitStyles);
@@ -55,9 +67,11 @@ function ProviderBootstrap() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <InterwovenKitProvider {...TESTNET}>
-        <App />
-      </InterwovenKitProvider>
+      <WagmiProvider config={wagmiConfig}>
+        <InterwovenKitProvider {...TESTNET}>
+          <App />
+        </InterwovenKitProvider>
+      </WagmiProvider>
     </QueryClientProvider>
   );
 }
