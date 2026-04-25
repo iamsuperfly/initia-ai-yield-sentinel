@@ -1,5 +1,5 @@
 import { truncate } from '@initia/utils';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { InterwovenKit, useInterwovenKit } from '@initia/interwovenkit-react';
 import { evaluateSentinel, type MarketSnapshot } from './sentinel';
 
@@ -12,6 +12,8 @@ const initialState: MarketSnapshot = {
   bridgeSpreadBps: 18,
   momentum: 64,
 };
+
+type ProviderStatus = 'initializing' | 'ready' | 'failed';
 
 export function App() {
   const {
@@ -29,8 +31,13 @@ export function App() {
   const [txHash, setTxHash] = useState<string | null>(null);
   const [status, setStatus] = useState<string>('Idle');
   const [error, setError] = useState<string | null>(null);
+  const [providerStatus, setProviderStatus] = useState<ProviderStatus>('initializing');
 
   const signal = useMemo(() => evaluateSentinel(snapshot), [snapshot]);
+
+  useEffect(() => {
+    setProviderStatus('ready');
+  }, []);
 
   const update = (key: keyof MarketSnapshot, value: number) => {
     setSnapshot((prev) => ({ ...prev, [key]: value }));
@@ -43,7 +50,9 @@ export function App() {
       await autoSign.enable(CHAIN_ID);
       setStatus('Auto-signing enabled');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to enable auto-signing');
+      const message = err instanceof Error ? err.message : 'Failed to enable auto-signing';
+      setError(message);
+      setProviderStatus('failed');
       setStatus('Auto-signing unavailable');
     }
   };
@@ -63,6 +72,7 @@ export function App() {
   const executeSentinel = async () => {
     if (!address) {
       setError('Connect a wallet first');
+      setStatus('Execution blocked');
       return;
     }
 
@@ -86,7 +96,7 @@ export function App() {
       });
 
       setTxHash(result?.transactionHash ?? null);
-      setStatus('Execution confirmed');
+      setStatus(result?.transactionHash ? 'Execution confirmed' : 'Execution submitted without hash');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Execution failed');
       setStatus('Execution failed');
@@ -105,6 +115,31 @@ export function App() {
           auto-signing UX controls.
         </p>
       </header>
+
+      <section className="card diagnostics" aria-live="polite">
+        <h2>Runtime Diagnostics</h2>
+        <p>
+          Provider initialization:{' '}
+          <strong className={providerStatus === 'failed' ? 'error' : 'success'}>{providerStatus}</strong>
+        </p>
+        <p>
+          Wallet connected: <strong>{isConnected ? 'yes' : 'no'}</strong>
+        </p>
+        <p>
+          Chain ID in use: <strong>{CHAIN_ID}</strong>
+        </p>
+        <p>
+          Last tx status: <strong>{status}</strong>
+        </p>
+      </section>
+
+      {providerStatus === 'failed' && (
+        <section className="card errorCard" role="alert">
+          <h2>Wallet Provider Error</h2>
+          <p>The provider is not healthy. Reconnect the wallet or refresh the app.</p>
+          {error && <p className="error">Error: {error}</p>}
+        </section>
+      )}
 
       <section className="card">
         <h2>Wallet & Profile</h2>

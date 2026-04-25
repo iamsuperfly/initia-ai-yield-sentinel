@@ -4,8 +4,13 @@
   background: #0b1020;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
+  background: radial-gradient(circle at top, #112350 0%, #0b1020 60%);
 }
 
 .container {
@@ -21,6 +26,19 @@ body {
   background: #131d36;
   border-radius: 12px;
   padding: 1rem;
+}
+
+.diagnostics strong {
+  text-transform: uppercase;
+}
+
+.errorCard {
+  border-color: #7a1f1f;
+  background: #2a1212;
+}
+
+.errorCard pre {
+  white-space: pre-wrap;
 }
 
 label {
