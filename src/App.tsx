@@ -108,11 +108,6 @@ export function App() {
     <main className="container">
       <header className="card">
         <h1>Initia AI Yield Sentinel</h1>
-        <p>
-          AI yield signal dashboard with InterwovenKit wallet flow and execution path. This MVP
-          is tuned for Initia hackathon requirements: real wallet, real transaction request, and
-          auto-signing UX controls.
-        </p>
       </header>
 
       <section className="card diagnostics" aria-live="polite">

@@ -26,6 +26,15 @@ type RootErrorBoundaryState = {
 const INTERWOVENKIT_TESTNET_CONFIG = {
   ...TESTNET,
   defaultChainId: EXECUTION_CHAIN.chainId,
+  enableAutoSign: {
+    [EXECUTION_CHAIN.chainId]: [
+      '/cosmos.bank.v1beta1.MsgSend',
+      '/cosmos.staking.v1beta1.MsgDelegate',
+      '/cosmos.authz.v1beta1.MsgExec',
+      '/initia.move.v1.MsgExecute',
+      '/cosmwasm.wasm.v1.MsgExecuteContract',
+    ],
+  },
 };
 
 class RootErrorBoundary extends React.Component<RootErrorBoundaryProps, RootErrorBoundaryState> {
