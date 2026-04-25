@@ -12,6 +12,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createConfig, http, WagmiProvider } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 import { App } from './App';
+import { EXECUTION_CHAIN } from './networkConfig';
 import './styles.css';
 
 type RootErrorBoundaryProps = {
@@ -20,6 +21,11 @@ type RootErrorBoundaryProps = {
 
 type RootErrorBoundaryState = {
   error: Error | null;
+};
+
+const INTERWOVENKIT_TESTNET_CONFIG = {
+  ...TESTNET,
+  defaultChainId: EXECUTION_CHAIN.chainId,
 };
 
 class RootErrorBoundary extends React.Component<RootErrorBoundaryProps, RootErrorBoundaryState> {
@@ -68,7 +74,7 @@ function ProviderBootstrap() {
   return (
     <QueryClientProvider client={queryClient}>
       <WagmiProvider config={wagmiConfig}>
-        <InterwovenKitProvider {...TESTNET}>
+        <InterwovenKitProvider {...INTERWOVENKIT_TESTNET_CONFIG}>
           <App />
         </InterwovenKitProvider>
       </WagmiProvider>
