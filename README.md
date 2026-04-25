@@ -4,6 +4,7 @@ This repository is a **Vite runtime** for the Initia AI Yield Sentinel app.
 It includes:
 
 - InterwovenKit wallet connect/open wallet/open bridge flow (wrapped with React Query root provider).
+- Wagmi v2 root provider/config with required chain transport for InterwovenKit compatibility.
 - Sentinel score/confidence/reasons UI.
 - Execute transaction flow using `requestTxBlock` and status feedback.
 - Runtime diagnostics panel (provider state, wallet state, chain ID, last tx status).
@@ -15,6 +16,8 @@ It includes:
 - React 19 + TypeScript
 - `@initia/interwovenkit-react`
 - `@tanstack/react-query`
+- `wagmi`
+- `viem`
 
 ## Local development
 
@@ -48,10 +51,11 @@ Use these exact settings:
 `React.StrictMode`
 → `RootErrorBoundary`
 → `QueryClientProvider`
+→ `WagmiProvider` (wagmi `createConfig` with `initiaPrivyWalletConnector`, `mainnet`, `http()` transport)
 → `InterwovenKitProvider`
 → `App`
 
-This ordering is required so InterwovenKit hooks/components can access the React Query context in dev, preview, and Vercel production runtime.
+This ordering is required so InterwovenKit hooks/components can access both React Query and Wagmi contexts in dev, preview, and Vercel production runtime.
 
 ## Runtime expectations
 
@@ -77,4 +81,3 @@ If runtime crashes during startup, the app shows a red **Runtime Initialization 
 - Transaction success depends on wallet connectivity and chain availability.
 - `requestTxBlock` may return no hash in some wallet/provider edge cases; UI still reports status.
 - Bundle size is large due to wallet ecosystem dependencies; Vite build can warn about chunk size.
-
