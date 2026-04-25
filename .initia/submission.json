@@ -16,6 +16,6 @@
   "demo_video_url": "TO_BE_ADDED",
   "proof_of_deployment": {
     "rpc_url": "http://localhost:26657",
-    "notes": "Runtime-stable Vite UI with InterwovenKit wallet + requestTxBlock execution path. Capture final transaction hash in demo video/submission evidence."
+    "notes": "Runtime-stable Vite UI with QueryClientProvider -> InterwovenKitProvider initialization, wallet + requestTxBlock execution path. Capture final transaction hash in demo video/submission evidence."
   }
 }

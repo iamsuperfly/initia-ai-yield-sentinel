@@ -3,7 +3,7 @@
 This repository is a **Vite runtime** for the Initia AI Yield Sentinel app.
 It includes:
 
-- InterwovenKit wallet connect/open wallet/open bridge flow.
+- InterwovenKit wallet connect/open wallet/open bridge flow (wrapped with React Query root provider).
 - Sentinel score/confidence/reasons UI.
 - Execute transaction flow using `requestTxBlock` and status feedback.
 - Runtime diagnostics panel (provider state, wallet state, chain ID, last tx status).
@@ -14,6 +14,7 @@ It includes:
 - Vite
 - React 19 + TypeScript
 - `@initia/interwovenkit-react`
+- `@tanstack/react-query`
 
 ## Local development
 
@@ -42,13 +43,23 @@ Use these exact settings:
 - **Build Command:** `npm run build`
 - **Output Directory:** `dist`
 
+## Provider tree (runtime root)
+
+`React.StrictMode`
+→ `RootErrorBoundary`
+→ `QueryClientProvider`
+→ `InterwovenKitProvider`
+→ `App`
+
+This ordering is required so InterwovenKit hooks/components can access the React Query context in dev, preview, and Vercel production runtime.
+
 ## Runtime expectations
 
 On a healthy load you should see:
 
 1. Header card: **Initia AI Yield Sentinel**
 2. Diagnostics card with:
-   - Provider initialization: `READY`
+   - Provider initialization: `ready`
    - Wallet connected: `yes/no`
    - Chain ID in use: `ai-yield-sentinel-1`
    - Last tx status: starts at `Idle`
